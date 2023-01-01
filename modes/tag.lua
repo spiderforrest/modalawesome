@@ -27,9 +27,9 @@ end
 local tag_commands = {
   {
     description = "focus client by direction",
-    pattern = {'%d*', '[hjkl]'},
+    pattern = {'%d*', '[neio]'},
     handler = function(_, count, movement)
-      local directions = {h = 'left', j = 'down', k = 'up', l = 'right'}
+      local directions = {n = 'left', e = 'down', i = 'up', o = 'right'}
       count = count == '' and 1 or tonumber(count)
 
       for _ = 1, count do
@@ -52,9 +52,9 @@ local tag_commands = {
   },
   {
     description = "swap client by direction",
-    pattern = {'m', '%d*', '[hjkl]'},
+    pattern = {'m', '%d*', '[neio]'},
     handler = function(_, _, count, movement)
-      local directions = {h = 'left', j = 'down', k = 'up', l = 'right'}
+      local directions = {n = 'left', e = 'down', i = 'up', o = 'right'}
       local sel = client.focus
       local scr = sel.screen
       count = count == '' and 1 or tonumber(count)
@@ -205,16 +205,16 @@ local tag_commands = {
       end
     end
   },
-  {
-    description = "minimize",
-    pattern = {'n'},
-    handler = function()
-      local c = client.focus
-      if c then
-        c.minimized = true
-      end
-    end
-  },
+  -- {
+  --   description = "minimize",
+  --   pattern = {'n'},
+  --   handler = function()
+  --     local c = client.focus
+  --     if c then
+  --       c.minimized = true
+  --     end
+  --   end
+  -- },
   {
     description = "restore minimized",
     pattern = {'u'},
@@ -245,7 +245,7 @@ local tag_commands = {
   },
   {
     description = "enter client mode",
-    pattern = {'i'},
+    pattern = {'k'},
     handler = function(mode) mode.stop() end
   },
   {
