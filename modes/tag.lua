@@ -12,9 +12,9 @@ local function find_tag(func)
 
     if movement == 'g' then
       index = count
-    elseif movement == 'f' and index then
+    elseif movement == 'n' and index then
       index = ((index - 1 + count) % #showntags) + 1
-    elseif movement == 'b' and index then
+    elseif movement == 'o' and index then
       index = ((index - 1 - count) % #showntags) + 1
     end
 
@@ -39,18 +39,18 @@ local tag_commands = {
   },
   {
     description = "focus next/previous screen",
-    pattern = {'%d*', '[ey]'},
+    pattern = {'%d*', '[hj]'},
     handler = function(_, count, movement)
       count = count == '' and 1 or tonumber(count)
 
-      if movement == 'e' then
+      if movement == 'j' then
         awful.screen.focus_relative(count)
       else
         awful.screen.focus_relative(-count)
       end
     end
   },
-  {
+    {
     description = "swap client by direction",
     pattern = {'m', '%d*', '[neio]'},
     handler = function(_, _, count, movement)
@@ -82,24 +82,24 @@ local tag_commands = {
       end
     end
   },
-  {
+    {
     description = "jump to urgent client",
     pattern = {'x'},
     handler = function() awful.client.urgent.jumpto() end
   },
   {
     description = "focus tag by direction or globally",
-    pattern = {'%d*', '[gfb]'},
+    pattern = {'%d*', 'g'},
     handler = find_tag(awful.tag.object.view_only)
   },
   {
     description = "toggle tag",
-    pattern = {'t', '%d*', '[gfb]'},
+    pattern = {'t', '%d*', 't'},
     handler = find_tag(awful.tag.viewtoggle)
   },
   {
     description = "move focused client to tag",
-    pattern = {'m', '%d*', '[gfb]'},
+    pattern = {'m', '%d*', 't'},
     handler = find_tag(function(tag)
       local c = client.focus
       if c then
@@ -109,7 +109,7 @@ local tag_commands = {
   },
   {
     description = "toggle focused client on tag",
-    pattern = {'c', '%d*', '[gfb]'},
+    pattern = {'c', '%d*', 't'},
     handler = find_tag(function(tag)
       local c = client.focus
       if c then
@@ -117,7 +117,7 @@ local tag_commands = {
       end
     end)
   },
-  {
+   {
     description = "move to master",
     pattern = {'m', 'm'},
     handler = function()
@@ -129,13 +129,13 @@ local tag_commands = {
   },
   {
     description = "move to next/previous screen",
-    pattern = {'m', '%d*', '[ey]'},
+    pattern = {'m', '%d*', '[hj]'},
     handler = function(_, _, count, movement)
       local c = client.focus
       count = count == '' and 1 or tonumber(count)
 
       if c then
-        if movement == 'e' then
+        if movement == 'h' then
           c:move_to_screen(c.screen.index + count)
         else
           c:move_to_screen(c.screen.index - count)
@@ -153,9 +153,9 @@ local tag_commands = {
       end
     end
   },
-  {
+   {
     description = "toggle floating",
-    pattern = {'p', 'h'},
+    pattern = {'c', 'h'},
     handler = function()
       local c = client.focus
       if c then
@@ -165,7 +165,7 @@ local tag_commands = {
   },
   {
     description = "toggle keep on top",
-    pattern = {'p', 'o'},
+    pattern = {'c', 'o'},
     handler = function()
       local c = client.focus
       if c then
@@ -175,7 +175,7 @@ local tag_commands = {
   },
   {
     description = "toggle sticky",
-    pattern = {'p', 's'},
+    pattern = {'c', 's'},
     handler = function()
       local c = client.focus
       if c then
@@ -184,8 +184,8 @@ local tag_commands = {
     end
   },
   {
-    description = "toggle fullscreen",
-    pattern = {'p', 'f'},
+    description = "toggle fullscreen(b for big)",
+    pattern = {'c', 'b'},
     handler = function()
       local c = client.focus
       if c then
@@ -194,9 +194,9 @@ local tag_commands = {
       end
     end
   },
-  {
+    {
     description = "toggle maximized",
-    pattern = {'p', 'm'},
+    pattern = {'c', 'm'},
     handler = function()
       local c = client.focus
       if c then
@@ -205,16 +205,16 @@ local tag_commands = {
       end
     end
   },
-  -- {
-  --   description = "minimize",
-  --   pattern = {'n'},
-  --   handler = function()
-  --     local c = client.focus
-  --     if c then
-  --       c.minimized = true
-  --     end
-  --   end
-  -- },
+  {
+    description = "minimize",
+    pattern = {'d'},
+    handler = function()
+      local c = client.focus
+      if c then
+        c.minimized = true
+      end
+    end
+  },
   {
     description = "restore minimized",
     pattern = {'u'},
@@ -245,12 +245,12 @@ local tag_commands = {
   },
   {
     description = "enter client mode",
-    pattern = {'k'},
+    pattern = {'[ka]'},
     handler = function(mode) mode.stop() end
   },
   {
     description = "enter launcher mode",
-    pattern = {'r'},
+    pattern = {'[rl]'},
     handler = function(mode) mode.start("launcher") end
   },
   {
